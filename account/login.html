@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Connexion - FlowPage</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body class="auth-page">
+
+  <div class="box">
+    <h1>Connexion</h1>
+
+    <input id="email" placeholder="Email">
+    <input id="password" type="password" placeholder="Mot de passe">
+
+    <p id="error"></p>
+
+    <button class="submit" onclick="login()">Se connecter</button>
+    <button class="cancel" onclick="window.location.href='../index.html'">Annuler</button>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyBqBMIeFOkjlrTQWVbAK3QwgbbFa0KBHFE",
+      authDomain: "flowpage-a1f0e.firebaseapp.com",
+      projectId: "flowpage-a1f0e",
+      appId: "1:549936871728:web:03d28b432006004d9330f5"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    async function login() {
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value;
+      const errorBox = document.getElementById("error");
+
+      errorBox.textContent = "";
+
+      if (!email || !password) {
+        errorBox.textContent = "⚠️ Remplis tous les champs.";
+        return;
+      }
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+
+        window.location.href = "../config.html";
+
+      } catch (err) {
+        console.error(err);
+
+        if (err.code === "auth/user-not-found") {
+          errorBox.textContent = "⚠️ Aucun compte trouvé.";
+        } else if (err.code === "auth/wrong-password") {
+          errorBox.textContent = "⚠️ Mot de passe incorrect.";
+        } else if (err.code === "auth/invalid-email") {
+          errorBox.textContent = "⚠️ Email invalide.";
+        } else {
+          errorBox.textContent = "⚠️ Erreur de connexion.";
+        }
+      }
+    }
+
+    window.login = login;
+  </script>
+
+</body>
+</html>

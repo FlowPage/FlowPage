@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Profil utilisateur</title>
+
+  <style>
+    :root {
+      --primary: #70F7DF;
+      --secondary: #38BBAF;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--primary);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background: white;
+      width: 420px;
+      padding: 25px;
+      border-radius: 20px;
+      text-align: center;
+    }
+
+    img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    h1 {
+      margin: 10px 0;
+      font-size: 22px;
+    }
+
+    .link {
+      display: block;
+      margin: 10px 0;
+      padding: 12px;
+      background: #f4f4f4;
+      border-radius: 10px;
+      text-decoration: none;
+      color: black;
+      font-weight: bold;
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card" id="card">
+    <p>Chargement...</p>
+  </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  query,
+  where,
+  getDocs
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBqBMIeFOkjlrTQWVbAK3QwgbbFa0KBHFE",
+  authDomain: "flowpage-a1f0e.firebaseapp.com",
+  projectId: "flowpage-a1f0e",
+  appId: "1:549936871728:web:03d28b432006004d9330f5"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// 📍 récup username dans URL
+const params = new URLSearchParams(window.location.search);
+const username = params.get("pseudo");
+
+const card = document.getElementById("card");
+
+async function loadUser() {
+  const q = query(
+    collection(db, "users"),
+    where("username", "==", username)
+  );
+
+  const snap = await getDocs(q);
+
+  if (snap.empty) {
+    card.innerHTML = `<p class="error">Utilisateur introuvable</p>`;
+    return;
+  }
+
+  const data = snap.docs[0].data();
+
+  if (!data.published) {
+    card.innerHTML = `<p class="error">Ce profil n'est pas public</p>`;
+    return;
+  }
+
+  card.innerHTML = `
+    ${data.avatar ? `<img src="${data.avatar}">` : ""}
+    <h1>@${data.username}</h1>
+    <p>${data.title || ""}</p>
+
+    <div id="links"></div>
+  `;
+
+  const linksDiv = document.getElementById("links");
+
+  (data.links || []).forEach(link => {
+    const a = document.createElement("a");
+    a.className = "link";
+    a.href = link.url;
+    a.target = "_blank";
+    a.textContent = link.title;
+
+    linksDiv.appendChild(a);
+  });
+}
+
+loadUser();
+</script>
+
+</body>
+</html>

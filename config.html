@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - FlowPage</title>
+
+  <style>
+    :root {
+      --primary: #70F7DF;
+      --secondary: #38BBAF;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: var(--primary);
+      height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: white;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar button {
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .publish { background: var(--secondary); color: white; }
+    .logout { background: black; color: white; }
+    .danger { background: red; color: white; }
+
+    .main {
+      flex: 1;
+      padding: 30px;
+    }
+
+    .box {
+      background: white;
+      padding: 25px;
+      border-radius: 20px;
+      max-width: 750px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 6px 0;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+    }
+
+    .btn {
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    .add { background: var(--secondary); color: white; }
+
+    .link {
+      background: #f4f4f4;
+      padding: 10px;
+      border-radius: 10px;
+      margin-top: 8px;
+    }
+
+    .small-btn {
+      margin-top: 5px;
+      padding: 6px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .delete { background: red; color: white; }
+
+    /* 🔵 STATE PUBLICATION */
+    #status {
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    .pub { color: green; }
+    .nopub { color: red; }
+  </style>
+</head>
+
+<body>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <h3>FlowPage</h3>
+
+    <button class="publish" onclick="togglePublish()">Publier / Dépublier</button>
+    <button class="logout" onclick="logout()">Déconnexion</button>
+    <button class="danger" onclick="deleteAccount()">Supprimer compte</button>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <div class="box">
+
+      <h2 id="username">@user</h2>
+
+      <!-- 🔵 STATUS PUBLICATION -->
+      <div id="status">...</div>
+
+      <input id="titleSite" placeholder="Titre de ta page">
+
+      <input type="file" id="avatarInput" accept="image/*">
+      <img id="avatarPreview" style="width:80px;height:80px;border-radius:50%;margin-top:10px;display:block;object-fit:cover;">
+
+      <button class="btn add" onclick="saveProfile()">Sauvegarder profil</button>
+
+      <hr>
+
+      <input id="title" placeholder="Titre du lien">
+      <input id="url" placeholder="URL">
+
+      <button class="btn add" onclick="addLink()">Ajouter lien</button>
+
+      <h3>Mes liens</h3>
+      <div id="links"></div>
+
+    </div>
+
+  </div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  deleteUser
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  deleteDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBqBMIeFOkjlrTQWVbAK3QwgbbFa0KBHFE",
+  authDomain: "flowpage-a1f0e.firebaseapp.com",
+  projectId: "flowpage-a1f0e",
+  appId: "1:549936871728:web:03d28b432006004d9330f5"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+let currentUser;
+let userData;
+let avatarBase64 = null;
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  currentUser = user;
+
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
+
+  userData = snap.data() || {};
+  userData.links = userData.links || [];
+
+  document.getElementById("username").innerText = "@" + userData.username;
+  document.getElementById("titleSite").value = userData.title || "";
+
+  updateStatus();
+  renderLinks(userData.links);
+
+  if (userData.avatar) {
+    document.getElementById("avatarPreview").src = userData.avatar;
+  }
+});
+
+/* 📸 AVATAR (preview + save propre) */
+document.getElementById("avatarInput").addEventListener("change", function(e) {
+  const file = e.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function(event) {
+    avatarBase64 = event.target.result;
+    document.getElementById("avatarPreview").src = avatarBase64;
+  };
+
+  reader.readAsDataURL(file);
+});
+
+/* 💾 PROFIL (AVATAR FIX ICI) */
+async function saveProfile() {
+  const title = document.getElementById("titleSite").value;
+
+  const ref = doc(db, "users", currentUser.uid);
+
+  const updateData = {
+    title: title || ""
+  };
+
+  if (avatarBase64) {
+    updateData.avatar = avatarBase64;
+  }
+
+  await updateDoc(ref, updateData);
+
+  alert("✔ Profil sauvegardé !");
+}
+
+/* ➕ LINK */
+async function addLink() {
+  const title = document.getElementById("title").value;
+  const url = document.getElementById("url").value;
+
+  if (!title || !url) return;
+
+  const ref = doc(db, "users", currentUser.uid);
+
+  const newLink = {
+    id: Date.now().toString(),
+    title,
+    url
+  };
+
+  await updateDoc(ref, {
+    links: [...userData.links, newLink]
+  });
+
+  location.reload();
+}
+
+/* 📜 RENDER */
+function renderLinks(links) {
+  const container = document.getElementById("links");
+  container.innerHTML = "";
+
+  links.forEach(link => {
+    const div = document.createElement("div");
+    div.className = "link";
+
+    div.innerHTML = `
+      <input value="${link.title}" onchange="editTitle('${link.id}', this.value)">
+      <input value="${link.url}" onchange="editUrl('${link.id}', this.value)">
+      <button class="small-btn delete" onclick="deleteLink('${link.id}')">Supprimer</button>
+    `;
+
+    container.appendChild(div);
+  });
+}
+
+/* ✏️ EDIT */
+window.editTitle = (id, value) => {
+  const link = userData.links.find(l => l.id === id);
+  updateLink(id, value, link.url);
+};
+
+window.editUrl = (id, value) => {
+  const link = userData.links.find(l => l.id === id);
+  updateLink(id, link.title, value);
+};
+
+async function updateLink(id, title, url) {
+  const ref = doc(db, "users", currentUser.uid);
+
+  const updated = userData.links.map(l =>
+    l.id === id ? { id, title, url } : l
+  );
+
+  await updateDoc(ref, { links: updated });
+}
+
+/* 🌐 PUBLISH + STATUS */
+async function togglePublish() {
+  const ref = doc(db, "users", currentUser.uid);
+
+  const newState = !userData.published;
+
+  await updateDoc(ref, {
+    published: newState
+  });
+
+  userData.published = newState;
+  updateStatus();
+
+  alert("Statut modifié");
+}
+
+function updateStatus() {
+  const el = document.getElementById("status");
+
+  if (userData.published) {
+    el.textContent = "🟢 Page publiée";
+    el.className = "pub";
+  } else {
+    el.textContent = "🔴 Page non publiée";
+    el.className = "nopub";
+  }
+}
+
+/* 🚪 LOGOUT */
+function logout() {
+  signOut(auth);
+  window.location.href = "index.html";
+}
+
+/* 🧨 DELETE */
+async function deleteAccount() {
+  if (!confirm("Supprimer compte ?")) return;
+
+  const ref = doc(db, "users", currentUser.uid);
+  const snap = await getDoc(ref);
+
+  const username = snap.data().username;
+
+  await deleteDoc(doc(db, "usernames", username));
+  await deleteDoc(ref);
+  await deleteUser(currentUser);
+
+  window.location.href = "index.html";
+}
+
+/* WINDOW EXPORTS */
+window.saveProfile = saveProfile;
+window.addLink = addLink;
+window.deleteLink = deleteLink;
+window.togglePublish = togglePublish;
+window.logout = logout;
+window.deleteAccount = deleteAccount;
+
+async function deleteLink(id) {
+  const ref = doc(db, "users", currentUser.uid);
+
+  const filtered = userData.links.filter(l => l.id !== id);
+
+  await updateDoc(ref, { links: filtered });
+
+  location.reload();
+}
+
+window.deleteLink = deleteLink;
+
+</script>
+
+</body>
+</html>
