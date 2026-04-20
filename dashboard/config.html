@@ -173,9 +173,10 @@ let currentUser;
 let userData;
 let avatarBase64 = null;
 
+/* ================= AUTH ================= */
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
-    window.location.href = "index.html";
+    window.location.href = "../account/login.html";
     return;
   }
 
@@ -198,12 +199,12 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-/* 📸 AVATAR (preview + save propre) */
-document.getElementById("avatarInput").addEventListener("change", function(e) {
+/* ================= AVATAR ================= */
+document.getElementById("avatarInput").addEventListener("change", (e) => {
   const file = e.target.files[0];
   const reader = new FileReader();
 
-  reader.onload = function(event) {
+  reader.onload = (event) => {
     avatarBase64 = event.target.result;
     document.getElementById("avatarPreview").src = avatarBase64;
   };
@@ -211,26 +212,24 @@ document.getElementById("avatarInput").addEventListener("change", function(e) {
   reader.readAsDataURL(file);
 });
 
-/* 💾 PROFIL (AVATAR FIX ICI) */
+/* ================= PROFILE ================= */
 async function saveProfile() {
   const title = document.getElementById("titleSite").value;
 
   const ref = doc(db, "users", currentUser.uid);
 
-  const updateData = {
+  const data = {
     title: title || ""
   };
 
-  if (avatarBase64) {
-    updateData.avatar = avatarBase64;
-  }
+  if (avatarBase64) data.avatar = avatarBase64;
 
-  await updateDoc(ref, updateData);
+  await updateDoc(ref, data);
 
   alert("✔ Profil sauvegardé !");
 }
 
-/* ➕ LINK */
+/* ================= LINKS ================= */
 async function addLink() {
   const title = document.getElementById("title").value;
   const url = document.getElementById("url").value;
@@ -252,7 +251,6 @@ async function addLink() {
   location.reload();
 }
 
-/* 📜 RENDER */
 function renderLinks(links) {
   const container = document.getElementById("links");
   container.innerHTML = "";
@@ -271,7 +269,7 @@ function renderLinks(links) {
   });
 }
 
-/* ✏️ EDIT */
+/* ================= EDIT ================= */
 window.editTitle = (id, value) => {
   const link = userData.links.find(l => l.id === id);
   updateLink(id, value, link.url);
@@ -290,9 +288,11 @@ async function updateLink(id, title, url) {
   );
 
   await updateDoc(ref, { links: updated });
+
+  userData.links = updated;
 }
 
-/* 🌐 PUBLISH + STATUS */
+/* ================= STATUS ================= */
 async function togglePublish() {
   const ref = doc(db, "users", currentUser.uid);
 
@@ -311,22 +311,19 @@ async function togglePublish() {
 function updateStatus() {
   const el = document.getElementById("status");
 
-  if (userData.published) {
-    el.textContent = "🟢 Page publiée";
-    el.className = "pub";
-  } else {
-    el.textContent = "🔴 Page non publiée";
-    el.className = "nopub";
-  }
+  el.textContent = userData.published
+    ? "🟢 Page publiée"
+    : "🔴 Page non publiée";
+
+  el.className = userData.published ? "pub" : "nopub";
 }
 
-/* 🚪 LOGOUT */
+/* ================= AUTH ACTIONS ================= */
 function logout() {
   signOut(auth);
-  window.location.href = "index.html";
+  window.location.href = "../index.html";
 }
 
-/* 🧨 DELETE */
 async function deleteAccount() {
   if (!confirm("Supprimer compte ?")) return;
 
@@ -339,10 +336,10 @@ async function deleteAccount() {
   await deleteDoc(ref);
   await deleteUser(currentUser);
 
-  window.location.href = "index.html";
+  window.location.href = "../index.html";
 }
 
-/* WINDOW EXPORTS */
+/* ================= EXPORT ================= */
 window.saveProfile = saveProfile;
 window.addLink = addLink;
 window.deleteLink = deleteLink;
@@ -357,7 +354,8 @@ async function deleteLink(id) {
 
   await updateDoc(ref, { links: filtered });
 
-  location.reload();
+  userData.links = filtered;
+  renderLinks(filtered);
 }
 
 window.deleteLink = deleteLink;

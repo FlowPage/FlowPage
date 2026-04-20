@@ -68,10 +68,8 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore,
-  collection,
-  query,
-  where,
-  getDocs
+  doc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -84,26 +82,38 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// 📍 récup username dans URL
+// ⚡ URL SIMPLE : /user/?pseudo=dvd_hss
 const params = new URLSearchParams(window.location.search);
 const username = params.get("pseudo");
 
 const card = document.getElementById("card");
 
 async function loadUser() {
-  const q = query(
-    collection(db, "users"),
-    where("username", "==", username)
-  );
+  if (!username) {
+    card.innerHTML = `<p class="error">Pseudo manquant</p>`;
+    return;
+  }
 
-  const snap = await getDocs(q);
+  // ⚡ ON UTILISE LE DOCUMENT username (BEAUCOUP PLUS RAPIDE)
+  const ref = doc(db, "usernames", username);
+  const snap = await getDoc(ref);
 
-  if (snap.empty) {
+  if (!snap.exists()) {
     card.innerHTML = `<p class="error">Utilisateur introuvable</p>`;
     return;
   }
 
-  const data = snap.docs[0].data();
+  const uid = snap.data().uid;
+
+  const userRef = doc(db, "users", uid);
+  const userSnap = await getDoc(userRef);
+
+  if (!userSnap.exists()) {
+    card.innerHTML = `<p class="error">Profil introuvable</p>`;
+    return;
+  }
+
+  const data = userSnap.data();
 
   if (!data.published) {
     card.innerHTML = `<p class="error">Ce profil n'est pas public</p>`;
@@ -114,7 +124,6 @@ async function loadUser() {
     ${data.avatar ? `<img src="${data.avatar}">` : ""}
     <h1>@${data.username}</h1>
     <p>${data.title || ""}</p>
-
     <div id="links"></div>
   `;
 
@@ -126,7 +135,6 @@ async function loadUser() {
     a.href = link.url;
     a.target = "_blank";
     a.textContent = link.title;
-
     linksDiv.appendChild(a);
   });
 }

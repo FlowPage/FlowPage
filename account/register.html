@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Créer un compte - FlowPage</title>
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../styles/style.css">
 </head>
 
 <body class="auth-page">
@@ -22,65 +22,61 @@
   </div>
 
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyBqBMIeFOkjlrTQWVbAK3QwgbbFa0KBHFE",
-      authDomain: "flowpage-a1f0e.firebaseapp.com",
-      projectId: "flowpage-a1f0e",
-      appId: "1:549936871728:web:03d28b432006004d9330f5"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-    const db = getFirestore(app);
+    import { auth, db } from "../js/firebase.js";
+    import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+    import { doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
     async function register() {
-      const username = document.getElementById("username").value.trim();
+      const usernameInput = document.getElementById("username").value.trim();
       const email = document.getElementById("email").value.trim();
       const password = document.getElementById("password").value;
       const errorBox = document.getElementById("error");
 
       errorBox.textContent = "";
 
-      if (!username || !email || !password) {
+      if (!usernameInput || !email || !password) {
         errorBox.textContent = "⚠️ Remplis tous les champs.";
         return;
       }
 
-      try {
-        // 🔍 vérifier pseudo unique (SAFE)
-        const ref = doc(db, "usernames", username.toLowerCase());
-        const snap = await getDoc(ref);
+      const username = usernameInput.toLowerCase().replace(/\s+/g, "");
 
-        if (snap.exists()) {
+      try {
+        // 🔍 check username
+        const usernameRef = doc(db, "usernames", username);
+        const usernameSnap = await getDoc(usernameRef);
+
+        if (usernameSnap.exists()) {
           errorBox.textContent = "⚠️ Ce pseudo est déjà pris.";
           return;
         }
 
-        // 👤 créer user
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        // 👤 create auth
+        const cred = await createUserWithEmailAndPassword(auth, email, password);
 
-        // 💾 stocker username → uid
-        await setDoc(doc(db, "usernames", username.toLowerCase()), {
-          uid: userCred.user.uid
+        // 💾 usernames index
+        await setDoc(usernameRef, {
+          uid: cred.user.uid
         });
 
-        // 💾 stocker profil user
-        await setDoc(doc(db, "users", userCred.user.uid), {
-          username: username,
-          email: email
+        // 💾 user full profile (IMPORTANT POUR DASHBOARD)
+        await setDoc(doc(db, "users", cred.user.uid), {
+          username,
+          email,
+          title: "",
+          avatar: "",
+          links: [],
+          published: false
         });
 
-        window.location.href = "../config.html";
+        // 🚀 redirect (cohérent login)
+        window.location.href = "../dashboard/config.html";
 
       } catch (err) {
         console.error(err);
 
         if (err.code === "auth/email-already-in-use") {
-          errorBox.textContent = "⚠️ Cet email est déjà utilisé.";
+          errorBox.textContent = "⚠️ Email déjà utilisé.";
         } else if (err.code === "auth/weak-password") {
           errorBox.textContent = "⚠️ Mot de passe trop faible.";
         } else {
