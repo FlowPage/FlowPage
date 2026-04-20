@@ -176,7 +176,7 @@ let avatarBase64 = null;
 /* ================= AUTH ================= */
 onAuthStateChanged(auth, async (user) => {
   if (!user) {
-    window.location.href = "../account/login.html";
+    window.location.href = "../account/login";
     return;
   }
 
@@ -321,7 +321,7 @@ function updateStatus() {
 /* ================= AUTH ACTIONS ================= */
 function logout() {
   signOut(auth);
-  window.location.href = "../index.html";
+  window.location.href = "../index";
 }
 
 async function deleteAccount() {
@@ -336,7 +336,7 @@ async function deleteAccount() {
   await deleteDoc(ref);
   await deleteUser(currentUser);
 
-  window.location.href = "../index.html";
+  window.location.href = "../index";
 }
 
 /* ================= EXPORT ================= */
