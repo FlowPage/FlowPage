@@ -72,7 +72,6 @@
       font-weight: bold;
     }
 
-    /* 📱 MOBILE */
     @media (max-width: 768px) {
       .card {
         padding: 20px;
@@ -98,26 +97,12 @@
   </div>
 
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore,
-  doc,
-  getDoc
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { db } from "../js/firebase.js";
+import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBqBMIeFOkjlrTQWVbAK3QwgbbFa0KBHFE",
-  authDomain: "flowpage-a1f0e.firebaseapp.com",
-  projectId: "flowpage-a1f0e",
-  appId: "1:549936871728:web:03d28b432006004d9330f5"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-// ⚡ URL : /user/?pseudo=dvd_hss
-const params = new URLSearchParams(window.location.search);
-const username = params.get("pseudo");
+// 📌 URL propre: /user/dvd_hss
+const pathParts = window.location.pathname.split("/").filter(Boolean);
+const username = pathParts[pathParts.length - 1];
 
 const card = document.getElementById("card");
 
@@ -127,7 +112,8 @@ async function loadUser() {
     return;
   }
 
-  const ref = doc(db, "usernames", username);
+  // usernames → uid
+  const ref = doc(db, "usernames", username.toLowerCase());
   const snap = await getDoc(ref);
 
   if (!snap.exists()) {
@@ -137,6 +123,7 @@ async function loadUser() {
 
   const uid = snap.data().uid;
 
+  // users → profil
   const userRef = doc(db, "users", uid);
   const userSnap = await getDoc(userRef);
 

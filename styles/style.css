@@ -4,12 +4,18 @@
   --danger: #ff4d4d;
 }
 
+/* ================= RESET FIX ================= */
+* {
+  box-sizing: border-box;
+}
+
 /* ================= BASE ================= */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: var(--primary);
   color: black;
+  overflow-x: hidden;
 }
 
 /* ================= LANDING ================= */
@@ -47,6 +53,12 @@ body {
   gap: 12px;
 }
 
+/* FIX débordement boutons */
+.nav a {
+  white-space: nowrap;
+}
+
+/* HERO */
 .hero {
   display: flex;
   align-items: center;
@@ -108,7 +120,7 @@ body {
   background: #555;
 }
 
-/* GLOBAL BUTTON (dashboard only safe) */
+/* ================= GLOBAL BUTTON ================= */
 button {
   padding: 10px 15px;
   border: none;
@@ -133,9 +145,10 @@ button {
   text-align: center;
 }
 
+/* FIX inputs auth */
 .auth-page input {
   width: 100%;
-  max-width: 260px;
+  max-width: 100%;
   padding: 12px;
   margin: 8px 0;
   border-radius: 10px;
@@ -147,6 +160,7 @@ button {
 .dashboard {
   display: flex;
   min-height: 100vh;
+  width: 100%;
 }
 
 .sidebar {
@@ -161,6 +175,8 @@ button {
 .main {
   flex: 1;
   padding: 30px;
+  display: flex;
+  justify-content: center;
 }
 
 .card {
@@ -168,10 +184,14 @@ button {
   padding: 25px;
   border-radius: 20px;
   max-width: 750px;
+  width: 100%;
 }
 
+/* FIX inputs overflow */
 input {
   width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
   padding: 10px;
   margin: 6px 0;
   border-radius: 10px;
@@ -229,8 +249,20 @@ input {
   color: white;
 }
 
-/* 📱 VERSION MOBILE */
+.card, box {
+  overflow: hidden;
+}
+
+/* ================= MOBILE ================= */
 @media (max-width: 768px) {
+
+  body {
+    flex-direction: column;
+  }
+
+  input {
+    font-size: 16px;
+  }
 
   .container {
     padding: 0 18px;
@@ -266,14 +298,10 @@ input {
 
   /* HERO */
   .hero {
-    flex-direction: column-reverse;
-    gap: 35px;
+    flex-direction: column;
+    gap: 25px;
     margin-top: 45px;
     text-align: center;
-  }
-
-  .hero-text {
-    margin-left: 0;
   }
 
   .hero-text h1 {
@@ -288,7 +316,6 @@ input {
     max-width: 90%;
   }
 
-  /* IMAGE */
   .hero-img {
     width: 100%;
     max-width: 260px;
@@ -296,7 +323,6 @@ input {
     border-radius: 25px;
   }
 
-  /* BOUTONS GLOBAL */
   .btn {
     width: 100%;
     font-size: 16px;
@@ -304,10 +330,51 @@ input {
     border-radius: 18px;
   }
 
-  /* FOOTER */
   .footer {
     margin-top: 50px;
     font-size: 12px;
     opacity: 0.7;
+  }
+
+  /* DASHBOARD MOBILE FIX */
+  .dashboard {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    background: white;
+  }
+
+  .sidebar h3 {
+    width: 100%;
+    text-align: center;
+    margin: 5px 0;
+  }
+
+  .sidebar button {
+    flex: 1;
+    min-width: 120px;
+    max-width: 160px;
+    padding: 10px;
+  }
+
+  .main {
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+  }
+
+  .card {
+    width: 100%;
+    padding: 15px;
+    border-radius: 15px;
+    max-width: 100px;
   }
 }
