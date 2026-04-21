@@ -233,40 +233,42 @@ input {
 @media (max-width: 768px) {
 
   .container {
-    padding: 0 20px;
+    padding: 0 18px;
   }
 
   /* HEADER */
   .topbar {
     flex-direction: column;
-    gap: 20px;
-    padding: 20px;
-    border-radius: 30px;
+    gap: 18px;
+    padding: 22px;
+    border-radius: 25px;
     text-align: center;
   }
 
   .name {
-    font-size: 22px;
+    font-size: 24px;
+    font-weight: 800;
   }
 
   .nav {
     flex-direction: column;
     width: 100%;
-    gap: 10px;
+    gap: 12px;
   }
 
   .nav a {
     width: 100%;
     text-align: center;
-    font-size: 16px;
+    font-size: 15px;
     padding: 14px;
+    border-radius: 14px;
   }
 
   /* HERO */
   .hero {
     flex-direction: column-reverse;
-    gap: 40px;
-    margin-top: 50px;
+    gap: 35px;
+    margin-top: 45px;
     text-align: center;
   }
 
@@ -275,32 +277,37 @@ input {
   }
 
   .hero-text h1 {
-    font-size: 36px;
+    font-size: 34px;
     line-height: 1.2;
   }
 
   .desc {
-    font-size: 17px;
+    font-size: 16px;
+    line-height: 1.4;
     margin: auto;
+    max-width: 90%;
   }
 
   /* IMAGE */
   .hero-img {
     width: 100%;
-    max-width: 280px;
+    max-width: 260px;
     height: auto;
+    border-radius: 25px;
   }
 
   /* BOUTONS GLOBAL */
   .btn {
     width: 100%;
     font-size: 16px;
-    padding: 16px;
+    padding: 15px;
+    border-radius: 18px;
   }
 
   /* FOOTER */
   .footer {
-    margin-top: 60px;
+    margin-top: 50px;
     font-size: 12px;
+    opacity: 0.7;
   }
 }
