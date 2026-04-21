@@ -1,1 +1,13 @@
-/*    /index.html   200
+# 🔹 Pages sans .html
+/account/login      /account/login.html      200
+/account/register   /account/register.html   200
+/dashboard          /dashboard/config.html   200
+
+# 🔹 Profil utilisateur propre
+/user/:pseudo       /user/index.html?pseudo=:pseudo   200
+
+# 🔹 (option) accès direct sans /user
+/:pseudo            /user/index.html?pseudo=:pseudo   200
+
+# 🔹 Fallback (SPA-like)
+/*                  /index.html                200

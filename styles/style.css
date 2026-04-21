@@ -228,3 +228,64 @@ input {
   background: var(--danger);
   color: white;
 }
+
+/* 📱 VERSION MOBILE */
+@media (max-width: 768px) {
+
+  .container {
+    padding: 0 20px;
+  }
+
+  /* HEADER */
+  .topbar {
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+    border-radius: 30px;
+    text-align: center;
+  }
+
+  .nav {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .nav a {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* HERO */
+  .hero {
+    flex-direction: column-reverse;
+    gap: 40px;
+    margin-top: 50px;
+    text-align: center;
+  }
+
+  .hero-text {
+    margin-left: 0;
+  }
+
+  .hero-text h1 {
+    font-size: 32px;
+  }
+
+  .desc {
+    font-size: 16px;
+    margin: auto;
+  }
+
+  /* IMAGE */
+  .hero-img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 60px;
+    font-size: 12px;
+  }
+}
