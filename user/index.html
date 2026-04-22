@@ -20,8 +20,24 @@
       align-items: center;
       min-height: 100vh;
       padding: 20px;
+      position: relative;
     }
 
+    /* ================= SHARE BUTTON ================= */
+    .share-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: white;
+      border: none;
+      padding: 10px 14px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    /* ================= MAIN CARD ================= */
     .card {
       background: white;
       width: 420px;
@@ -72,6 +88,24 @@
       font-weight: bold;
     }
 
+    /* ================= CTA BUTTON ================= */
+    .cta {
+      margin-top: 20px;
+      display: inline-block;
+      background: var(--secondary);
+      color: white;
+      padding: 14px 20px;
+      border-radius: 14px;
+      text-decoration: none;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .cta:hover {
+      transform: scale(1.05);
+      background: #2ea69b;
+    }
+
     @media (max-width: 768px) {
       .card {
         padding: 20px;
@@ -92,6 +126,9 @@
 
 <body>
 
+  <!-- 🔥 SHARE BUTTON -->
+  <button class="share-btn" onclick="sharePage()">Partager</button>
+
   <div class="card" id="card">
     <p>Chargement...</p>
   </div>
@@ -100,7 +137,6 @@
 import { db } from "../js/firebase.js";
 import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// 📌 URL propre: /user/dvd_hss
 const pathParts = window.location.pathname.split("/").filter(Boolean);
 const username = pathParts[pathParts.length - 1];
 
@@ -112,7 +148,6 @@ async function loadUser() {
     return;
   }
 
-  // usernames → uid
   const ref = doc(db, "usernames", username.toLowerCase());
   const snap = await getDoc(ref);
 
@@ -123,7 +158,6 @@ async function loadUser() {
 
   const uid = snap.data().uid;
 
-  // users → profil
   const userRef = doc(db, "users", uid);
   const userSnap = await getDoc(userRef);
 
@@ -144,6 +178,9 @@ async function loadUser() {
     <h1>@${data.username}</h1>
     <p>${data.title || ""}</p>
     <div id="links"></div>
+
+    <!-- 🔥 CTA BUTTON -->
+    <a href="/account/register" class="cta">Rejoignez l'aventure !</a>
   `;
 
   const linksDiv = document.getElementById("links");
@@ -159,6 +196,21 @@ async function loadUser() {
 }
 
 loadUser();
+
+/* ================= SHARE FUNCTION ================= */
+window.sharePage = function () {
+  const url = window.location.href;
+
+  if (navigator.share) {
+    navigator.share({
+      title: "FlowPage",
+      url: url
+    });
+  } else {
+    navigator.clipboard.writeText(url);
+    alert("Lien copié !");
+  }
+};
 </script>
 
 </body>
