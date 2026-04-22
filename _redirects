@@ -2,6 +2,7 @@
 /account/login      /account/login.html      200
 /account/register   /account/register.html   200
 /dashboard          /dashboard/config.html   200
+/cgu                /cgu.html                200
 
 # 🔹 Profil utilisateur propre (IMPORTANT)
 /user/*             /user/index.html         200
