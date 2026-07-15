@@ -3,12 +3,12 @@ import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-aut
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBqBMIeFOkjlrTQWVbAK3QwgbbFa0KBHFE",
-  authDomain: "flowpage-a1f0e.firebaseapp.com",
-  projectId: "flowpage-a1f0e",
-  storageBucket: "flowpage-a1f0e.firebasestorage.app",
-  messagingSenderId: "549936871728",
-  appId: "1:549936871728:web:03d28b432006004d9330f5"
+  apiKey: "AIzaSyDjwQyIsEzfPS02IuvpkWDWYC8_EvgFatQ",
+  authDomain: "flowpage-fa13c.firebaseapp.com",
+  projectId: "flowpage-fa13c",
+  storageBucket: "flowpage-fa13c.firebasestorage.app",
+  messagingSenderId: "294883912905",
+  appId: "1:294883912905:web:f62e3e3f942b19a502f118",
 };
 
 const app = initializeApp(firebaseConfig);
