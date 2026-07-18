@@ -6,15 +6,27 @@
   </url>
 
   <url>
-    <loc>https://flowpage.fr/account/login</loc>
+    <loc>https://flowpage.fr/apropos</loc>
   </url>
 
   <url>
-    <loc>https://flowpage.fr/account/register</loc>
+    <loc>https://flowpage.fr/decouvrir</loc>
   </url>
 
   <url>
     <loc>https://flowpage.fr/cgu</loc>
+  </url>
+
+  <url>
+    <loc>https://flowpage.fr/fonctionnalites</loc>
+  </url>
+
+  <url>
+    <loc>https://flowpage.fr/compte/sign-up</loc>
+  </url>
+
+  <url>
+    <loc>https://flowpage.fr/compte/sign-in</loc>
   </url>
 
 </urlset>

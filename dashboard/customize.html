@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Personnalisation - FlowPage</title>
+
+
+<link rel="stylesheet" href="../styles/web.css">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+</head>
+
+
+<body>
+
+
+<header class="floating-header">
+
+
+<div class="logo">
+FlowPage
+</div>
+
+
+
+<nav class="navbar">
+
+
+<a href="index.html">
+Dashboard
+</a>
+
+
+<a href="#" id="logout">
+Déconnexion
+</a>
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+<main class="dashboard-page">
+
+
+
+<section class="dashboard-header">
+
+
+<h1>
+🎨 Personnalisation
+</h1>
+
+
+<p>
+Modifiez l'apparence de votre FlowPage.
+</p>
+
+
+</section>
+
+
+
+
+
+
+
+<section class="settings-container">
+
+
+
+
+
+<div class="settings-card">
+
+
+<h2>
+Profil
+</h2>
+
+
+
+<label>
+Titre de la page
+</label>
+
+
+<input 
+id="title"
+type="text"
+placeholder="Votre nom"
+>
+
+
+
+
+<label>
+Description
+</label>
+
+
+<textarea
+id="description"
+placeholder="Présentez-vous..."
+></textarea>
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="settings-card">
+
+
+<h2>
+Couleurs
+</h2>
+
+
+
+<label>
+Couleur du fond (BETA)
+</label>
+
+
+
+<input
+id="background"
+type="color"
+>
+
+
+
+
+<br><br>
+
+
+<button id="save">
+
+Enregistrer
+
+</button>
+
+
+<p id="message"></p>
+
+
+</div>
+
+
+
+
+
+
+
+</section>
+
+
+
+</main>
+
+
+
+
+<script type="module" src="../scripts/customize.js"></script>
+
+
+
+</body>
+
+
+</html>

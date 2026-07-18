@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Mes liens - FlowPage</title>
+
+
+<link rel="stylesheet" href="../styles/web.css">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+
+</head>
+
+
+<body>
+
+
+<header class="floating-header">
+
+
+<div class="logo">
+FlowPage
+</div>
+
+
+<nav class="navbar">
+
+
+<a href="index.html">
+Dashboard
+</a>
+
+
+<a href="#" id="logout">
+Déconnexion
+</a>
+
+
+</nav>
+
+
+</header>
+
+
+
+
+
+
+
+<main class="dashboard-page">
+
+
+
+<section class="dashboard-header">
+
+
+<h1>
+🔗 Mes liens
+</h1>
+
+
+<p>
+Ajoutez et organisez les liens de votre FlowPage.
+</p>
+
+
+</section>
+
+
+
+
+
+
+
+
+<section class="links-container">
+
+
+
+<div class="links-card">
+
+
+
+<h2>
+Ajouter un lien
+</h2>
+
+
+
+<input
+id="link-title"
+type="text"
+placeholder="Nom du lien (Instagram, TikTok...)"
+>
+
+
+
+<input
+id="link-url"
+type="url"
+placeholder="https://..."
+>
+
+
+
+
+<button id="add-link">
+
+Ajouter
+
+</button>
+
+
+
+<p id="message"></p>
+
+
+</div>
+
+
+
+
+
+
+
+
+<div class="links-card">
+
+
+<h2>
+Mes liens actuels
+</h2>
+
+
+
+<div id="links-list">
+
+</div>
+
+
+
+</div>
+
+
+
+
+
+
+</section>
+
+
+
+</main>
+
+
+
+
+
+<script type="module" src="../scripts/links.js"></script>
+
+
+</body>
+
+
+</html>

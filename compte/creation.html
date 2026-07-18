@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Créer un compte - FlowPage</title>
+
+    <link rel="stylesheet" href="../styles/web.css">
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+
+
+<body>
+
+
+
+<header class="floating-header">
+
+
+    <div class="logo">
+        FlowPage
+    </div>
+
+
+
+    <nav class="navbar">
+
+
+        <a href="../index.html">
+            Accueil
+        </a>
+
+
+    </nav>
+
+
+</header>
+
+
+
+
+
+<main class="creation-page">
+
+
+<section class="creation-container">
+
+
+
+<h1>
+    Créer votre compte
+</h1>
+
+
+<p class="subtitle">
+    Rejoignez FlowPage et créez votre espace personnalisé.
+</p>
+
+
+<p id="error-message"></p>
+
+
+
+
+
+<form>
+
+
+
+<label>
+    Pseudo
+</label>
+
+<input 
+    id="username"
+    type="text"
+    placeholder="Votre pseudo"
+    required
+>
+
+
+
+
+
+<label>
+    Adresse e-mail
+</label>
+
+<input 
+    id="email"
+    type="email"
+    placeholder="Votre adresse e-mail"
+    required
+>
+
+
+
+
+
+<label>
+    Mot de passe
+</label>
+
+<input 
+    id="password"
+    type="password"
+    placeholder="Votre mot de passe"
+    required
+>
+
+
+
+
+
+<div class="conditions">
+
+
+<input 
+    type="checkbox"
+    required
+>
+
+
+<p>
+
+J'accepte les 
+
+<a href="../cgu.html" target="_blank">
+Conditions Générales d'Utilisation
+</a>
+
+de FlowPage.
+
+</p>
+
+
+</div>
+
+
+
+
+
+<button type="submit">
+
+Créer mon compte
+
+</button>
+
+
+
+
+</form>
+
+
+
+</section>
+
+
+</main>
+
+
+
+
+<script type="module" src="../scripts/creation.js"></script>
+
+
+</body>
+
+</html>

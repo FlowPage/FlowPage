@@ -1,60 +1,107 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FlowPage</title>
-  <meta name="description" content="FlowPage est une plateforme permettant aux utilisateurs de créer une page personnelle regroupant des liens configurés sur une page dédiée.">
-  <link rel="stylesheet" href="styles/style.css">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FlowPage</title>
+
+    <link rel="stylesheet" href="styles/web.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 </head>
+
 
 <body>
 
-  <div class="container">
 
-    <header class="topbar">
-      <div class="name">FlowPage</div>
+<header class="floating-header">
 
-      <div class="nav">
-        <a href="account/login" class="btn dark">Se connecter</a>
-        <a href="account/register" class="btn gray">Créer une page</a>
-      </div>
-    </header>
 
-    <section class="hero">
-      <div class="hero-text">
-        <h1>Your Personal Page<br>of Flowing Connections</h1>
+    <div class="logo">
+        FlowPage
+    </div>
 
-        <p class="desc">
-          Have a page that brings together all your websites? Why not create it with us!
-        </p>
-      </div>
 
-      <div class="hero-media">
-        <img src="assets/images/flowpage.webp" class="hero-img">
 
-        <div class="social-icons">
+    <nav class="navbar">
 
-          <a href="https://discord.gg/kztevzDX3q" target="_blank" class="discord-icon">
-            <img src="assets/icons/discord.png" alt="Discord">
-          </a>
 
-          <a href="https://tiktok.com/@flowpage.fr" target="_blank" class="tiktok-icon">
-            <img src="assets/icons/tiktok.svg" alt="TikTok">
-          </a>
+        <a href="index.html">Accueil</a>
+
+        <a href="decouvrir.html">Découvrir</a>
+
+        <a href="fonctionnalites.html">Fonctionnalités</a>
+
+        <a href="compte/creation.html">Créer</a>
+
+
+
+        <div class="menu">
+
+
+            <button class="menu-btn">
+                ⋯
+            </button>
+
+
+
+            <div class="dropdown">
+
+                <a href="compte/connexion.html">Connexion</a>
+
+                <a href="compte/creation.html">Inscription</a>
+
+                <a href="cgu.html">Conditions d'utilisation</a>
+
+                <a href="apropos.html">À propos</a>
+
+            </div>
+
 
         </div>
 
-      </div>
-    </section>
 
-  </div>
+    </nav>
 
-  <footer class="footer">
-    © 2026 FlowPage. All rights reserved.
-    <br>
-    <a href="cgu">Conditions d'utilisation</a>
-  </footer>
+
+</header>
+
+
+
+
+
+<main class="hero">
+
+
+    <h1>
+        Créez votre espace,<br>
+        partagez tout simplement.
+    </h1>
+
+
+
+    <p>
+        Une seule page pour tous vos liens, entièrement personnalisable.
+    </p>
+
+
+
+    <a href="compte/creation.html" class="hero-button">
+        Commencer gratuitement
+    </a>
+
+
+</main>
+
+
 
 </body>
+
 </html>

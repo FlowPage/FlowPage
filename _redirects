@@ -1,12 +1,17 @@
-# 🔹 Pages sans .html
-/account/login      /account/login.html      200
-/account/register   /account/register.html   200
-/dashboard          /dashboard/config.html   200
-/cgu                /cgu.html                200
+/cgu                    /cgu.html               200
+/apropos                /apropos.html           200
+/decouvrir              /decouvrir.html         200
+/fonctionnalites        /fonctionnalites.html   200
 
-# 🔹 Profil utilisateur propre (IMPORTANT)
-/user/*             /user/index.html         200
-/:pseudo            /user/index.html         200
+/compte/sign-in         /compte/connexion.html  200
+/compte/sign-up         /compte/creation.html   200
 
-# 🔹 Fallback
-/*                  /index.html              200
+/dashboard              /dashboard/index.html   200
+/dashboard/customize    /dashboard/customize.html   200
+/dashboard/set-links    /dashboard/links.html   200
+/dashboard/settings     /dashboard/settings.html 200
+/dashboard/statistics   /dashboard/statistics.html 200
+
+/:username              /page.html?user=:username    200
+
+/*                      /index.html             200
